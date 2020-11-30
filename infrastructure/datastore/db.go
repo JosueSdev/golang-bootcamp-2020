@@ -4,16 +4,10 @@ import (
 	"strings"
 
 	"github.com/JosueSdev/golang-bootcamp-2020/config"
-	"github.com/JosueSdev/golang-bootcamp-2020/domain/model"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
-
-type postModel struct {
-	gorm.Model
-	model.Post
-}
 
 //NewMysqlDB creates a new mysql database instance
 func NewMysqlDB() (*gorm.DB, error) {

@@ -9,11 +9,6 @@ type Post struct {
 	Time    time.Time
 }
 
-//PostGetter allows to extract a Post from future compositions
-type PostGetter interface {
-	Get() Post
-}
-
 //Get implements PostGetter for Post
 func (p Post) Get() Post {
 	return p
