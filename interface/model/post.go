@@ -2,13 +2,13 @@ package model
 
 import "github.com/JosueSdev/golang-bootcamp-2020/domain/model"
 
-//PostModel adapts the domain model to a gorm aware environment
-type PostModel struct {
+//Post adapts the domain's post to a gorm aware environment
+type Post struct {
 	ID uint
 	model.Post
 }
 
 //TableName defines the table to lookup in the database
-func (PostModel) TableName() string {
+func (Post) TableName() string {
 	return "post"
 }

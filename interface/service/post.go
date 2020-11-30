@@ -12,7 +12,7 @@ type postService struct {
 
 //PostService is an interface to communicate with the post's service
 type PostService interface {
-	GetAll() ([]*model.PostModel, error)
+	GetAll() ([]*model.Post, error)
 }
 
 //NewPostService constructs a new PostService
@@ -21,8 +21,8 @@ func NewPostService(db *gorm.DB) PostService {
 }
 
 //GetAll retrieves all posts from the database
-func (ps *postService) GetAll() ([]*model.PostModel, error) {
-	var posts []*model.PostModel
+func (ps *postService) GetAll() ([]*model.Post, error) {
+	var posts []*model.Post
 
 	result := ps.db.Find(&posts)
 
