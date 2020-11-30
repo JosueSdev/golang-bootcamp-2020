@@ -20,6 +20,7 @@ func NewPostService(db *gorm.DB) PostService {
 	return &postService{db}
 }
 
+//GetAll retrieves all posts from the database
 func (ps *postService) GetAll() ([]*model.PostModel, error) {
 	var posts []*model.PostModel
 

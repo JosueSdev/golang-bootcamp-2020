@@ -16,9 +16,7 @@ func main() {
 
 	postHandler := handler.NewPostHandler(db)
 
-	err = postHandler.GetAll()
-
-	if err != nil {
+	if err = postHandler.GetAll(); err != nil {
 		fmt.Println(err)
 	}
 }

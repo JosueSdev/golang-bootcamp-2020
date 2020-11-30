@@ -22,6 +22,7 @@ func NewPostHandler(db *gorm.DB) PostHandler {
 	return &postHandler{service.NewPostService(db)}
 }
 
+//GetAll handles the getAllPosts use case
 func (pc *postHandler) GetAll() error {
 	posts, err := pc.PostService.GetAll()
 
