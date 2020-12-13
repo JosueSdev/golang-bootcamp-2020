@@ -13,6 +13,7 @@ func Build(app app.App) *chi.Mux {
 
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(jsonContenTypeMiddleware)
 
 	r.Mount("/blackjack", NewBlackjackBuilder(app.BlackjackHandler()).Build())
 
