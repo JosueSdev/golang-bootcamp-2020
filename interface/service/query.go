@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func realoadDeckQuery(baseURL string, decks int, cardsPerDeck int) string {
+func reloadDeckQuery(baseURL string, decks int, cardsPerDeck int) string {
 	query := strings.Builder{}
 
 	query.WriteString(baseURL)

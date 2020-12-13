@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/csv"
 	"encoding/json"
 	"errors"
 	"io"
@@ -33,7 +34,7 @@ func NewDeckService(cl client.Deck, csv datastore.CSVDeck) Deck {
 //ReloadDeck fetches a new deck an uses it to write/replace the csv storage
 func (d *deck) ReloadDeck() error {
 	//request a new deck
-	resp, err := d.API.Client().Get(realoadDeckQuery(
+	resp, err := d.API.Client().Get(reloadDeckQuery(
 		d.API.BaseURL(),
 		rules.BlackjackTable.AmountOfDecks(),
 		rules.BlackjackTable.CardsPerDeck(),
@@ -92,16 +93,33 @@ func (d *deck) GetHand(cardIndexes []int) ([]model.Card, error) {
 
 	r := d.CSV.Reader()
 
-	//dicard first record
-	if _, err := r.Read(); err != nil {
+	//get the requested cards
+	cards, err := readIndexedCards(cardIndexes, r)
+
+	if err != nil {
+		return cards, err
+	}
+
+	//refresh the file's offset
+	if err = d.CSV.Return(); err != nil {
 		return []model.Card{}, err
 	}
 
-	//get the requested cards
+	return cards, nil
+}
+
+func readIndexedCards(indexes []int, r *csv.Reader) ([]model.Card, error) {
 	cards := []model.Card{}
-	sort.Ints(cardIndexes)
+
+	//dicard first record
+	if _, err := r.Read(); err != nil {
+		return cards, err
+	}
+
+	sort.Ints(indexes)
+
 	var i int
-	for _, ci := range cardIndexes {
+	for _, ci := range indexes {
 		for ; i <= ci; i++ {
 			record, err := r.Read()
 			if err == io.EOF {
@@ -111,11 +129,6 @@ func (d *deck) GetHand(cardIndexes []int) ([]model.Card, error) {
 				cards = append(cards, parsing.RecordToCard(record))
 			}
 		}
-	}
-
-	//refresh the file's offset
-	if err := d.CSV.Return(); err != nil {
-		return []model.Card{}, err
 	}
 
 	return cards, nil
