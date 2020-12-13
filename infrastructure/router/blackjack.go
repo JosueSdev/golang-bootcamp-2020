@@ -23,9 +23,9 @@ func NewBlackjackBuilder(bh handler.Blackjack) BlackjackBuilder {
 func (br *blackJack) Build() *chi.Mux {
 	mux := chi.NewRouter()
 
-	mux.Get("/play", br.handler.GetGame)
+	mux.Get("/game", br.handler.GetGame)
 
-	mux.Put("/new", br.handler.PutTable)
+	mux.Put("/table", br.handler.PutTable)
 
 	return mux
 }
