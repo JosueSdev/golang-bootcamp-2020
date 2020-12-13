@@ -16,5 +16,5 @@ func Build(app app.App) *chi.Mux {
 
 	r.Mount("/blackjack", NewBlackjackBuilder(app.BlackjackHandler()).Build())
 
-	return nil
+	return r
 }
