@@ -1,6 +1,7 @@
 package blackjack
 
 import (
+	"errors"
 	"strconv"
 
 	"github.com/JosueSdev/golang-bootcamp-2020/domain/model"
@@ -16,7 +17,13 @@ func CardToValues(card model.Card) ([2]int, error) {
 		return [2]int{10, 0}, nil
 	default:
 		val, err := strconv.Atoi(card.Value)
-		return [2]int{val, 0}, err
+		if err != nil {
+			return [2]int{0, 0}, errors.New("invalid card")
+		}
+		if val > 10 {
+			return [2]int{0, 0}, errors.New("invalid card")
+		}
+		return [2]int{val, 0}, nil
 	}
 }
 
@@ -44,14 +51,14 @@ func CalculateScore(hand []model.Card) (score int, gameStatus string, err error)
 	}
 
 	for i := 0; i < aces; i++ {
-		isBlackjack, isFoul := checkScore(score + 10)
+		isBlackjack, isFoul := checkScore(score + 9)
 		if isBlackjack {
 			return 21, rules.EnglishStatus.Win(), nil
 		}
 		if isFoul {
 			break
 		}
-		score += 10
+		score += 9
 	}
 
 	return score, rules.EnglishStatus.Ok(), nil

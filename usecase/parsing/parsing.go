@@ -30,14 +30,3 @@ func RecordToCard(record []string) model.Card {
 		Code:  record[2],
 	}
 }
-
-//RecordsToCards converts csv card records into model.Card
-func RecordsToCards(records [][]string) []model.Card {
-	cards := []model.Card{}
-
-	for _, record := range records {
-		cards = append(cards, RecordToCard(record))
-	}
-
-	return cards
-}
