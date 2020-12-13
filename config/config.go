@@ -1,16 +1,30 @@
 package config
 
-type database struct {
-	User     string
-	Password string
-	Address  string
-	DBName   string
+import "time"
+
+type api struct {
+	BaseURL string
+	Timeout time.Duration
 }
 
-//Database cointains the configuration and credentialls to connect to the database
-var Database = database{
-	User:     "admin",
-	Password: "password",
-	Address:  "127.0.0.1:3306",
-	DBName:   "the_mirror",
+type server struct {
+	Addr         string
+	ReadTimeout  time.Duration
+	WriteTimeout time.Duration
+}
+
+//DeckFileName holds the name of the csv deck file
+const DeckFileName = "deck.csv"
+
+//CardsAPI contains the configuration
+var CardsAPI = api{
+	BaseURL: "https://deckofcardsapi.com/api",
+	Timeout: 3 * time.Second,
+}
+
+//Server contains the server's configuration
+var Server = server{
+	Addr:         ":8080",
+	ReadTimeout:  6 * time.Second,
+	WriteTimeout: 6 * time.Second,
 }
