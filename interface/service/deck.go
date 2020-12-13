@@ -44,7 +44,7 @@ func (d *deck) ReloadDeck() error {
 		return err
 	}
 
-	if resp.StatusCode <= 400 {
+	if resp.StatusCode >= 400 {
 		return errors.New(resp.Status)
 	}
 
@@ -68,8 +68,6 @@ func (d *deck) ReloadDeck() error {
 	//write new deck into csv
 	records := parsing.CardsToRecords(jsonBody.Cards)
 
-	d.CSV.Lock()
-	defer d.CSV.Unlock()
 	if err = d.CSV.Truncate(); err != nil {
 		return err
 	}
@@ -88,9 +86,6 @@ func (d *deck) ReloadDeck() error {
 
 //GetHand retrieves the requested cards from the storage
 func (d *deck) GetHand(cardIndexes []int) ([]model.Card, error) {
-	d.CSV.Lock()
-	defer d.CSV.Unlock()
-
 	r := d.CSV.Reader()
 
 	//get the requested cards

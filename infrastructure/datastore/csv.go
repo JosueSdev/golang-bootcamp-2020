@@ -3,14 +3,12 @@ package datastore
 import (
 	"encoding/csv"
 	"os"
-	"sync"
 
 	"github.com/JosueSdev/golang-bootcamp-2020/config"
 )
 
 type csvDeck struct {
 	file *os.File
-	sync.Mutex
 }
 
 //CSVDeck allows to interface with the csv file of the deck
@@ -20,8 +18,6 @@ type CSVDeck interface {
 	Return() error
 	Truncate() error
 	Close() error
-	Lock()
-	Unlock()
 }
 
 //NewCSVDeck opens a file and returns a CSVDeck
@@ -32,7 +28,7 @@ func NewCSVDeck() (CSVDeck, error) {
 		return nil, err
 	}
 
-	return &csvDeck{f, sync.Mutex{}}, nil
+	return &csvDeck{f}, nil
 }
 
 //Reader returns a csv reader
@@ -76,12 +72,4 @@ func (deck *csvDeck) Truncate() error {
 	}
 
 	return nil
-}
-
-func (deck *csvDeck) Lock() {
-	deck.Lock()
-}
-
-func (deck *csvDeck) Unlock() {
-	deck.Unlock()
 }
