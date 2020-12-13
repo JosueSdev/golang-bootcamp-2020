@@ -4,7 +4,5 @@ go 1.13
 
 require (
 	github.com/go-chi/chi v4.1.2+incompatible
-	github.com/jinzhu/gorm v1.9.16
-	gorm.io/driver/mysql v1.0.3
-	gorm.io/gorm v1.20.7
+	golang.org/x/net v0.0.0-20200324143707-d3edc9973b7e // indirect
 )
