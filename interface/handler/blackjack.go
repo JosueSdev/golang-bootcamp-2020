@@ -28,7 +28,7 @@ func NewBlackjackHandler(s service.Deck) Blackjack {
 //PutTable fetches a new deck an uses it to write/replace the csv datastore
 func (bj *blackjackHandler) PutTable(w http.ResponseWriter, r *http.Request) {
 	if err := bj.Service.ReloadDeck(); err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		HTTPProblem(w, 500)
 		return
 	}
 
@@ -37,7 +37,7 @@ func (bj *blackjackHandler) PutTable(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		HTTPProblem(w, 500)
 		return
 	}
 
@@ -50,20 +50,20 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	requestBytes, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		HTTPProblem(w, 500)
 		return
 	}
 
 	var requestBody getGameBody
 
 	if err = json.Unmarshal(requestBytes, &requestBody); err != nil {
-		http.Error(w, http.StatusText(400), 400)
+		HTTPProblem(w, 400)
 		return
 	}
 
 	for _, ci := range requestBody.CardIndexes {
 		if !blackjack.IsPositionInTableBounds(ci) {
-			http.Error(w, http.StatusText(400), 400)
+			HTTPProblem(w, 400)
 			return
 		}
 	}
@@ -72,14 +72,14 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	hand, err := bj.Service.GetHand(requestBody.CardIndexes)
 
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		HTTPProblem(w, 500)
 		return
 	}
 
 	score, gameStatus, err := blackjack.CalculateScore(hand)
 
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		HTTPProblem(w, 500)
 		return
 	}
 
@@ -91,7 +91,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
+		HTTPProblem(w, 500)
 		return
 	}
 
