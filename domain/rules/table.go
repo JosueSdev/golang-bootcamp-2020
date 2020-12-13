@@ -11,7 +11,7 @@ type Table interface {
 	CardsPerDeck() int
 }
 
-//NewBlackjackTable creates a new table with blackjack rules
+//BlackjackTable constains blackjack's setup rules
 var BlackjackTable Table = table{6, 52}
 
 //AmountOfDecks returns how many decks are being used in the table
