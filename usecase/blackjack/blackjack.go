@@ -2,6 +2,7 @@ package blackjack
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/JosueSdev/golang-bootcamp-2020/domain/model"
@@ -18,10 +19,10 @@ func CardToValues(card model.Card) ([2]int, error) {
 	default:
 		val, err := strconv.Atoi(card.Value)
 		if err != nil {
-			return [2]int{0, 0}, errors.New("invalid card")
+			return [2]int{0, 0}, fmt.Errorf("invalid card: %s not known", card.Value)
 		}
 		if val > 10 {
-			return [2]int{0, 0}, errors.New("invalid card")
+			return [2]int{0, 0}, errors.New("invalid card: value grater than expected")
 		}
 		return [2]int{val, 0}, nil
 	}
