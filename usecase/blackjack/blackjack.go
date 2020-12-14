@@ -12,9 +12,9 @@ import (
 //CardToValues extracts the possible values of a card. Returns an error if an inavlid card is gives as input.
 func CardToValues(card model.Card) ([2]int, error) {
 	switch {
-	case card.Value == "ACE":
+	case card.Value == rules.CardSpecialValue.Ace:
 		return [2]int{1, 10}, nil
-	case card.Value == "KING", card.Value == "QUEEN", card.Value == "JACK":
+	case card.Value == rules.CardSpecialValue.King, card.Value == rules.CardSpecialValue.Queen, card.Value == rules.CardSpecialValue.Jack:
 		return [2]int{10, 0}, nil
 	default:
 		val, err := strconv.Atoi(card.Value)
@@ -54,7 +54,7 @@ func CalculateScore(hand []model.Card) (score int, gameStatus string, err error)
 	for i := 0; i < aces; i++ {
 		isBlackjack, isFoul := checkScore(score + 9)
 		if isBlackjack {
-			return 21, rules.EnglishStatus.Win(), nil
+			return rules.WinningScore, rules.EnglishStatus.Win(), nil
 		}
 		if isFoul {
 			break
@@ -78,10 +78,10 @@ func IsPositionInTableBounds(i int) bool {
 }
 
 func checkScore(score int) (isBlackjack bool, isFoul bool) {
-	if score == 21 {
+	if score == rules.WinningScore {
 		return true, false
 	}
-	if score > 21 {
+	if score > rules.WinningScore {
 		return false, true
 	}
 	return false, false
