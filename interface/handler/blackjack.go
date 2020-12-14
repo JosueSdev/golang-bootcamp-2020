@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/JosueSdev/golang-bootcamp-2020/interface/service"
@@ -37,6 +38,7 @@ func (bj *blackjackHandler) PutTable(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
+		log.Println(err)
 		HTTPProblem(w, 500)
 		return
 	}
@@ -50,6 +52,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	requestBytes, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
+		log.Println(err)
 		HTTPProblem(w, 500)
 		return
 	}
@@ -57,12 +60,14 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	var requestBody getGameBody
 
 	if err = json.Unmarshal(requestBytes, &requestBody); err != nil {
+		log.Println(err)
 		HTTPProblem(w, 400)
 		return
 	}
 
 	for _, ci := range requestBody.CardIndexes {
 		if !blackjack.IsPositionInTableBounds(ci) {
+			log.Println("out of bounds reading")
 			HTTPProblem(w, 400)
 			return
 		}
@@ -72,6 +77,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	hand, err := bj.Service.GetHand(requestBody.CardIndexes)
 
 	if err != nil {
+		log.Println(err)
 		HTTPProblem(w, 500)
 		return
 	}
@@ -79,6 +85,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	score, gameStatus, err := blackjack.CalculateScore(hand)
 
 	if err != nil {
+		log.Println(err)
 		HTTPProblem(w, 500)
 		return
 	}
@@ -91,6 +98,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
+		log.Println(err)
 		HTTPProblem(w, 500)
 		return
 	}
