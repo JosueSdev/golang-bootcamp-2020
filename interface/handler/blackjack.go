@@ -29,7 +29,7 @@ func NewBlackjackHandler(s service.Deck) Blackjack {
 //PutTable fetches a new deck an uses it to write/replace the csv datastore
 func (bj *blackjackHandler) PutTable(w http.ResponseWriter, r *http.Request) {
 	if err := bj.Service.ReloadDeck(); err != nil {
-		HTTPProblem(w, 500)
+		HTTPProblem(w, http.StatusServiceUnavailable)
 		return
 	}
 
@@ -39,7 +39,7 @@ func (bj *blackjackHandler) PutTable(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
-		HTTPProblem(w, 500)
+		HTTPProblem(w, http.StatusInternalServerError)
 		return
 	}
 
@@ -53,7 +53,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
-		HTTPProblem(w, 500)
+		HTTPProblem(w, http.StatusInternalServerError)
 		return
 	}
 
@@ -61,14 +61,14 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 
 	if err = json.Unmarshal(requestBytes, &requestBody); err != nil {
 		log.Println(err)
-		HTTPProblem(w, 400)
+		HTTPProblem(w, http.StatusBadRequest)
 		return
 	}
 
 	for _, ci := range requestBody.CardIndexes {
 		if !blackjack.IsPositionInTableBounds(ci) {
 			log.Println("out of bounds reading")
-			HTTPProblem(w, 400)
+			HTTPProblem(w, http.StatusBadRequest)
 			return
 		}
 	}
@@ -78,7 +78,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
-		HTTPProblem(w, 500)
+		HTTPProblem(w, http.StatusInternalServerError)
 		return
 	}
 
@@ -86,7 +86,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
-		HTTPProblem(w, 500)
+		HTTPProblem(w, http.StatusInternalServerError)
 		return
 	}
 
@@ -99,7 +99,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Println(err)
-		HTTPProblem(w, 500)
+		HTTPProblem(w, http.StatusInternalServerError)
 		return
 	}
 

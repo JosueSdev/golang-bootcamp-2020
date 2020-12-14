@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"sort"
 
 	"github.com/JosueSdev/golang-bootcamp-2020/domain/model"
@@ -44,7 +45,7 @@ func (d *deck) ReloadDeck() error {
 		return err
 	}
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode >= http.StatusBadRequest {
 		return errors.New("failed to fetch from external API")
 	}
 
