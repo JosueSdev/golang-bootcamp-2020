@@ -13,6 +13,21 @@ var (
 		Suit:  "HEARTS",
 		Code:  "AH",
 	}
+	Jack = model.Card{
+		Value: "JACK",
+		Suit:  "HEARTS",
+		Code:  "JH",
+	}
+	Queen = model.Card{
+		Value: "QUEEN",
+		Suit:  "HEARTS",
+		Code:  "JH",
+	}
+	King = model.Card{
+		Value: "KING",
+		Suit:  "HEARTS",
+		Code:  "KH",
+	}
 	Three = model.Card{
 		Value: "3",
 		Suit:  "HEARTS",
@@ -49,6 +64,21 @@ func TestCardToValues(t *testing.T) {
 		"calculates value of ace": {
 			Ace,
 			[2]int{1, 10},
+			false,
+		},
+		"calculates value of jack": {
+			Jack,
+			[2]int{10, 0},
+			false,
+		},
+		"calculates value of queen": {
+			Queen,
+			[2]int{10, 0},
+			false,
+		},
+		"calculates value of king": {
+			King,
+			[2]int{10, 0},
 			false,
 		},
 		"fails on bad card": {

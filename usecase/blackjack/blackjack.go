@@ -13,7 +13,7 @@ func CardToValues(card model.Card) ([2]int, error) {
 	switch {
 	case card.Value == "ACE":
 		return [2]int{1, 10}, nil
-	case card.Value == "KING", card.Value == "QUEEN", card.Value == "KING":
+	case card.Value == "KING", card.Value == "QUEEN", card.Value == "JACK":
 		return [2]int{10, 0}, nil
 	default:
 		val, err := strconv.Atoi(card.Value)
