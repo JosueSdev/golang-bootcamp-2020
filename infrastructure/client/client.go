@@ -2,8 +2,7 @@ package client
 
 import (
 	"net/http"
-
-	"github.com/JosueSdev/golang-bootcamp-2020/config"
+	"time"
 )
 
 type deck struct {
@@ -18,10 +17,10 @@ type Deck interface {
 }
 
 //NewCardsClient returns an http client configured to make requests to the Deck of Cards API
-func NewCardsClient() Deck {
+func NewCardsClient(baseURL string, timeout time.Duration) Deck {
 	return &deck{
-		&http.Client{Timeout: config.CardsAPI.Timeout},
-		config.CardsAPI.BaseURL,
+		&http.Client{Timeout: timeout},
+		baseURL,
 	}
 }
 

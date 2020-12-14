@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	deckCSV, err := datastore.NewCSVDeck()
+	deckCSV, err := datastore.NewCSVDeck(config.DeckFileName)
 
 	defer func() {
 		err = deckCSV.Close()
@@ -27,7 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	deckClient := client.NewCardsClient()
+	deckClient := client.NewCardsClient(config.CardsAPI.BaseURL, config.CardsAPI.Timeout)
 
 	app := app.NewApp(deckClient, deckCSV)
 	router := router.Build(app)

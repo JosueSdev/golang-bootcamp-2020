@@ -3,8 +3,6 @@ package datastore
 import (
 	"encoding/csv"
 	"os"
-
-	"github.com/JosueSdev/golang-bootcamp-2020/config"
 )
 
 type csvDeck struct {
@@ -21,8 +19,8 @@ type CSVDeck interface {
 }
 
 //NewCSVDeck opens a file and returns a CSVDeck
-func NewCSVDeck() (CSVDeck, error) {
-	f, err := os.OpenFile(config.DeckFileName, os.O_RDWR|os.O_CREATE, 0666)
+func NewCSVDeck(deckFileName string) (CSVDeck, error) {
+	f, err := os.OpenFile(deckFileName, os.O_RDWR|os.O_CREATE, 0666)
 
 	if err != nil {
 		return nil, err
