@@ -191,3 +191,32 @@ func TestCalculateScore(t *testing.T) {
 		})
 	}
 }
+
+func TestIsPositionInTableBounds(t *testing.T) {
+	tests := map[string]struct {
+		Index   int
+		Success bool
+	}{
+		"fails with low outbound": {
+			-1,
+			false,
+		},
+		"fails with hight outbount": {
+			312,
+			false,
+		},
+		"success with inbount": {
+			311,
+			true,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			success := IsPositionInTableBounds(test.Index)
+			if success != test.Success {
+				t.Fail()
+			}
+		})
+	}
+}
