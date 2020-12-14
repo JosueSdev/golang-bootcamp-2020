@@ -45,7 +45,7 @@ func (d *deck) ReloadDeck() error {
 	}
 
 	if resp.StatusCode >= 400 {
-		return errors.New(resp.Status)
+		return errors.New("failed to fetch from external API")
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
