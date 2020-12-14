@@ -1,0 +1,10 @@
+deckfilename: "deck.csv"
+
+cardsapi:
+  baseurl: "https://deckofcardsapi.com/api"
+  timeout: 3
+
+server:
+  addr: ":8080"
+  readtimeout: 5
+  writetimeout: 5
