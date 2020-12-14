@@ -30,22 +30,24 @@ func NewBlackjackHandler(s service.Deck) Blackjack {
 //PutTable fetches a new deck an uses it to write/replace the csv datastore
 func (bj *blackjackHandler) PutTable(w http.ResponseWriter, r *http.Request) {
 	if err := bj.Service.ReloadDeck(); err != nil {
-		log.Println(err)
+		log.Printf("reloading deck: %s\n", err)
 		HTTPProblem(w, http.StatusServiceUnavailable, "")
 		return
 	}
 
-	reponse, err := json.Marshal(putTableResponse{
+	response, err := json.Marshal(putTableResponse{
 		Status: "ok",
 	})
 
 	if err != nil {
-		log.Println(err)
+		log.Printf("parsing response: %s\n", err)
 		HTTPProblem(w, http.StatusInternalServerError, "")
 		return
 	}
 
-	fmt.Fprint(w, string(reponse))
+	if _, err = fmt.Fprint(w, string(response)); err != nil {
+		log.Printf("responding: %s\n", err)
+	}
 }
 
 //GetGame takes indices for cards and returns the result of the game
@@ -54,7 +56,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	requestBytes, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
-		log.Println(err)
+		log.Printf("reading body: %s\n", err)
 		HTTPProblem(w, http.StatusInternalServerError, "")
 		return
 	}
@@ -62,7 +64,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	var requestBody getGameBody
 
 	if err = json.Unmarshal(requestBytes, &requestBody); err != nil {
-		log.Println(err)
+		log.Printf("parsing request: %s\n", err)
 		HTTPProblem(w, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -70,7 +72,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	for _, ci := range requestBody.CardIndexes {
 		if !blackjack.IsPositionInTableBounds(ci) {
 			err = errors.New("out of bounds")
-			log.Println(err)
+			log.Printf("parsing request: %s\n", err)
 			HTTPProblem(w, http.StatusBadRequest, err.Error())
 			return
 		}
@@ -80,7 +82,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	hand, err := bj.Service.GetHand(requestBody.CardIndexes)
 
 	if err != nil {
-		log.Println(err)
+		log.Printf("getting cards: %s\n", err)
 		HTTPProblem(w, http.StatusInternalServerError, "")
 		return
 	}
@@ -88,7 +90,7 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	score, gameStatus, err := blackjack.CalculateScore(hand)
 
 	if err != nil {
-		log.Println(err)
+		log.Printf("calculating score: %s\n", err)
 		HTTPProblem(w, http.StatusInternalServerError, "")
 		return
 	}
@@ -101,10 +103,12 @@ func (bj *blackjackHandler) GetGame(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err != nil {
-		log.Println(err)
+		log.Printf("parsing response: %s\n", err)
 		HTTPProblem(w, http.StatusInternalServerError, "")
 		return
 	}
 
-	fmt.Fprint(w, string(response))
+	if _, err = fmt.Fprint(w, string(response)); err != nil {
+		log.Printf("responding: %s\n", err)
+	}
 }
