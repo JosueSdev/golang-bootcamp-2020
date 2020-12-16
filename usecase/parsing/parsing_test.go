@@ -29,6 +29,10 @@ var (
 		"HEARTS",
 		"8H",
 	}
+	BadRecord = []string{
+		"trash",
+		"taste",
+	}
 	Cards   = []model.Card{AceCard, EightCard}
 	Records = [][]string{
 		{
@@ -51,15 +55,39 @@ func TestCardsToRecords(t *testing.T) {
 }
 
 func TestRecordToCard(t *testing.T) {
-	card := RecordToCard(AceRecord)
+	tests := map[string]struct {
+		Record []string
+		Card   model.Card
+		Err    bool
+	}{
+		"converts ace record": {
+			AceRecord,
+			AceCard,
+			false,
+		},
+		"fails on shorter record": {
+			BadRecord,
+			model.Card{},
+			true,
+		},
+	}
 
-	if card.Code != AceCard.Code {
-		t.Fail()
-	}
-	if card.Suit != AceCard.Suit {
-		t.Fail()
-	}
-	if card.Value != AceCard.Value {
-		t.Fail()
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			card, err := RecordToCard(test.Record)
+
+			if (err != nil) != test.Err {
+				t.Fail()
+			}
+			if card.Code != test.Card.Code {
+				t.Fail()
+			}
+			if card.Suit != test.Card.Suit {
+				t.Fail()
+			}
+			if card.Value != test.Card.Value {
+				t.Fail()
+			}
+		})
 	}
 }

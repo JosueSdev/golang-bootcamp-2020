@@ -122,7 +122,11 @@ func readIndexedCards(indexes []int, r *csv.Reader) ([]model.Card, error) {
 				break
 			}
 			if i == ci {
-				cards = append(cards, parsing.RecordToCard(record))
+				card, err := parsing.RecordToCard(record)
+				if err != nil {
+					return []model.Card{}, err
+				}
+				cards = append(cards, card)
 			}
 		}
 	}
