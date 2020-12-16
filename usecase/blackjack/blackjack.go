@@ -13,9 +13,9 @@ import (
 func CardToValues(card model.Card) ([2]int, error) {
 	switch {
 	case card.Value == rules.CardSpecialValue.Ace:
-		return [2]int{1, 10}, nil
+		return [2]int{rules.CardAceLowScore, rules.CardAceHighScore}, nil
 	case card.Value == rules.CardSpecialValue.King, card.Value == rules.CardSpecialValue.Queen, card.Value == rules.CardSpecialValue.Jack:
-		return [2]int{10, 0}, nil
+		return [2]int{rules.CardSpecialScore, 0}, nil
 	default:
 		val, err := strconv.Atoi(card.Value)
 		if err != nil {
@@ -52,14 +52,14 @@ func CalculateScore(hand []model.Card) (score int, gameStatus string, err error)
 	}
 
 	for i := 0; i < aces; i++ {
-		isBlackjack, isFoul := checkScore(score + 9)
+		isBlackjack, isFoul := checkScore(score + rules.CardAceHighScore - 1)
 		if isBlackjack {
 			return rules.WinningScore, rules.EnglishStatus.Win(), nil
 		}
 		if isFoul {
 			break
 		}
-		score += 9
+		score += rules.CardAceHighScore - 1
 	}
 
 	return score, rules.EnglishStatus.Ok(), nil

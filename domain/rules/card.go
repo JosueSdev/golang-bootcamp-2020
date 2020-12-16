@@ -27,3 +27,12 @@ var CardSpecialValue = cardSpecialValue{
 	Queen: "QUEEN",
 	King:  "KING",
 }
+
+//CardSpecialScore defines the score given by a Jack, Queen or King
+const CardSpecialScore = 10
+
+//CardAceLowScore defines the lower possible value of an Ace
+const CardAceLowScore = 1
+
+//CardAceHighScore defines the higer possible value of an Ace
+const CardAceHighScore = 11

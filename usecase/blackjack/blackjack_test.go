@@ -43,11 +43,17 @@ var (
 		Suit:  "POKEMON",
 		Code:  "PP",
 	}
-	RegularHand   = []model.Card{Eight, Eight}
-	WiningHand    = []model.Card{Ace, Three, Eight}
-	FoulHand      = []model.Card{Eight, Eight, Eight}
-	DoubleAceHand = []model.Card{Ace, Ace, Eight}
-	BadHand       = []model.Card{Ace, Bad}
+	TooBig = model.Card{
+		Value: "11",
+		Suit:  "HEARTS",
+		Code:  "11H",
+	}
+	RegularHand    = []model.Card{Eight, Eight}
+	WiningHand     = []model.Card{Three, Eight, Queen}
+	FoulHand       = []model.Card{Eight, Eight, Eight}
+	AceWinningHand = []model.Card{Ace, Jack}
+	DoubleAceHand  = []model.Card{Ace, Ace, Eight}
+	BadHand        = []model.Card{Ace, Bad}
 )
 
 func TestCardToValues(t *testing.T) {
@@ -63,26 +69,31 @@ func TestCardToValues(t *testing.T) {
 		},
 		"calculates value of ace": {
 			Ace,
-			[2]int{1, 10},
+			[2]int{rules.CardAceLowScore, rules.CardAceHighScore},
 			false,
 		},
 		"calculates value of jack": {
 			Jack,
-			[2]int{10, 0},
+			[2]int{rules.CardSpecialScore, 0},
 			false,
 		},
 		"calculates value of queen": {
 			Queen,
-			[2]int{10, 0},
+			[2]int{rules.CardSpecialScore, 0},
 			false,
 		},
 		"calculates value of king": {
 			King,
-			[2]int{10, 0},
+			[2]int{rules.CardSpecialScore, 0},
 			false,
 		},
 		"fails on bad card": {
 			Bad,
+			[2]int{0, 0},
+			true,
+		},
+		"fails on tpp big card": {
+			TooBig,
 			[2]int{0, 0},
 			true,
 		},
@@ -152,7 +163,7 @@ func TestCalculateScore(t *testing.T) {
 		},
 		"winning hand win": {
 			WiningHand,
-			21,
+			rules.WinningScore,
 			rules.EnglishStatus.Win(),
 			false,
 		},
@@ -162,9 +173,15 @@ func TestCalculateScore(t *testing.T) {
 			rules.EnglishStatus.Foul(),
 			false,
 		},
+		"winning with ace win": {
+			AceWinningHand,
+			rules.WinningScore,
+			rules.EnglishStatus.Win(),
+			false,
+		},
 		"double ace hand ok": {
 			DoubleAceHand,
-			19,
+			20,
 			rules.EnglishStatus.Ok(),
 			false,
 		},
