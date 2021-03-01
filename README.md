@@ -1,11 +1,67 @@
 # Golang Bootcamp
 
-## Introduction
+## Blackjack API
+
+A rest API that allows you to play blackjack by using the [Deck of Cards API](http://deckofcardsapi.com/)
+
+### Requests
+
+`PUT /blackjack/table` 
+
+Asks the external API for a set of decks to play. Must be used at least once to initialize the API (see "The Challenge" below).
+
+Example reply:
+
+`
+{
+    "status": "ok"
+}
+`
+
+`GET /blackjack/game`
+
+Receives an array of numbers between 0 and 311, each of wich represents a card in the game table. Returns the resulting hand.
+
+Example body:
+
+`
+{
+    "cards": [
+        0,
+        311
+    ]
+}
+`
+
+Example reply:
+
+`
+{
+    "game_status": "Ok",
+    "hand": [
+        {
+            "code": "8C",
+            "suit": "CLUBS",
+            "value": "8"
+        },
+        {
+            "code": "5D",
+            "suit": "DIAMONDS",
+            "value": "5"
+        }
+    ],
+    "score": 13
+}
+`
+
+## Bootcamp's details
+
+### Introduction
 
 Thank you for participating in the Golang Bootcamp course!
 Here, you'll find instructions for completing your certification.
 
-## The Challenge
+### The Challenge
 
 The purpose of the challenge is for you to demonstrate your Golang skills. This is your chance to show off everything you've learned during the course!!
 
@@ -22,7 +78,7 @@ The goal is to build a REST API which must include:
 - Follow conventions, best practices
 - Clean architecture
 
-## Requirements
+### Requirements
 
 These are the main requirements we will evaluate:
 
@@ -36,7 +92,7 @@ These are the main requirements we will evaluate:
   - Unit testing
   - CSV file fetching
 
-## Getting Started
+### Getting Started
 
 To get started, follow these steps:
 
@@ -47,7 +103,7 @@ To get started, follow these steps:
 1. Apply changes according to the mentor's comments
 1. Have fun!
 
-## Deliverables
+### Deliverables
 
 We provide the delivery dates so you can plan accordingly; please take this challenge seriously and try to make progress constantly.
 
@@ -55,7 +111,7 @@ It’s worth mentioning that you’ll ONLY get feedback from the review team for
 
 For the final deliverable, we will provide some feedback, but there is no extra review date. If you are struggling with something, contact your mentor and peers to get help on time. Feel free to use the slack channel available.
 
-## First Deliverable (due November 22th 23:59PM)
+### First Deliverable (due November 22th 23:59PM)
 
 Based on the self-study material and mentorship covered until this deliverable, we suggest you perform the following:
 
@@ -66,7 +122,7 @@ Based on the self-study material and mentorship covered until this deliverable, 
 
 > Note: what’s listed in this deliverable is just for guidance and to help you distribute your workload; you can deliver more or fewer items if necessary. However, if you deliver fewer items at this point, you have to cover the remaining tasks in the next deliverable.
 
-## Final Deliverable (due December 13th 23:59PM)
+### Final Deliverable (due December 13th 23:59PM)
 
 - Store read CSV/DB in a structure
 - Loop structure and print data
@@ -76,7 +132,7 @@ Based on the self-study material and mentorship covered until this deliverable, 
 
 > Important: this is the final deliverable, so all the requirements must be included. We will give you feedback and you will have 3 days more to apply changes. On the third day, we will stop receiving changes at 11:00 am.
 
-## Submitting the deliverables
+### Submitting the deliverables
 
 For submitting your work, you should follow these steps:
 
@@ -85,9 +141,9 @@ For submitting your work, you should follow these steps:
 3. Stay tune for feedback
 4. Do the changes according to your mentor's comments
 
-## Documentation
+### Documentation
 
-### Must to learn
+#### Must to learn
 
 - [Go Tour](https://tour.golang.org/welcome/1)
 - [Go basics](https://www.youtube.com/watch?v=C8LgvuEBraI)
@@ -100,7 +156,7 @@ For submitting your work, you should follow these steps:
 - [Any talk by Rob Pike](https://www.youtube.com/results?search_query=rob+pike)
 - [The Go Playground](https://play.golang.org/)
 
-### Self-Study Material
+#### Self-Study Material
 
 - [Golang Docs](https://golang.org/doc/)
 - [Constants](https://www.youtube.com/watch?v=lHJ33KvdyN4)
